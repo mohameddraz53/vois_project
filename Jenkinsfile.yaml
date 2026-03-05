@@ -20,7 +20,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 git(
-                    url: 'https://github.com/12salh/EKS-Cluster-Terraform.git',
+                    url: 'https://github.com/12salh/Vote-Stack.git',
                     branch: 'main'
                 )
             }
