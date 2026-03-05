@@ -104,7 +104,7 @@ resource "aws_apigatewayv2_vpc_link" "this" {
 # Integration with NLB
 # ------------------------
 data "aws_lb" "nlb" {
-  name = "a9d02518b973b41beaea9252876fdcb9"  # مثلا k8s-ingressn-nginxing-xxxx
+  name = "a3bc4ba12a00348ef8bc230ff6cdb7ef"  # مثلا k8s-ingressn-nginxing-xxxx
 }
 
 data "aws_lb_listener" "http" {
