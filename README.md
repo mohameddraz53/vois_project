@@ -5,7 +5,7 @@
 [![Kubernetes](https://img.shields.io/badge/kubernetes-1.28%2B-326CE5?logo=kubernetes)](https://kubernetes.io/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb)](https://www.mongodb.com/atlas)
 [![Datadog](https://img.shields.io/badge/Datadog-Monitoring-632CA6?logo=datadog)](https://www.datadoghq.com/)
-[![ArgoCD](https://img.shields.io/badge/ArgoCD-GitOps-EF4444?logo=argo)](https://argo-cd.readthedocs.io/) 
+[![ArgoCD](https://img.shields.io/badge/ArgoCD-GitOps-EF4444?logo=argo)](https://argo-cd.readthedocs.io/)
 
 Enterprise-ready platform for running a microservices voting application on **Amazon EKS**, with full Infrastructure as Code, CI/CD, and managed data. The stack includes Terraform (AWS, EKS), Jenkins pipelines, **ArgoCD** for GitOps, Helm (NGINX Ingress), and **MongoDB Atlas** as the managed database.
 
@@ -35,13 +35,13 @@ Enterprise-ready platform for running a microservices voting application on **Am
 
 This repository provides everything needed to build, deploy, and operate the voting application in AWS:
 
-| Area | Description |
-|------|-------------|
-| **Infrastructure** | VPC, IAM, EKS cluster, node group, API Gateway, Cognito, and VPC Link — all defined in Terraform. |
-| **CI/CD** | Jenkins pipelines for Cluster, Ingress, application build/deploy, and Api-Cognito; **ArgoCD** for GitOps-based deployment and sync. |
-| **Platform** | NGINX Ingress Controller (Helm) on EKS; API Gateway with JWT auth at the edge. |
-| **Application** | Voting microservices (vote, result, worker) with Kubernetes manifests and source in `app/`. |
-| **Database** | **MongoDB Atlas** — managed database. You must create a Kubernetes Secret in the cluster with your Atlas connection URL (see [Secrets and Registry](#secrets-and-registry)). No secret file is committed in this repo. |
+| Area               | Description                                                                                                                                                                                                            |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Infrastructure** | VPC, IAM, EKS cluster, node group, API Gateway, Cognito, and VPC Link — all defined in Terraform.                                                                                                                      |
+| **CI/CD**          | Jenkins pipelines for Cluster, Ingress, application build/deploy, and Api-Cognito; **ArgoCD** for GitOps-based deployment and sync.                                                                                    |
+| **Platform**       | NGINX Ingress Controller (Helm) on EKS; API Gateway with JWT auth at the edge.                                                                                                                                         |
+| **Application**    | Voting microservices (vote, result, worker) with Kubernetes manifests and source in `app/`.                                                                                                                            |
+| **Database**       | **MongoDB Atlas** — managed database. You must create a Kubernetes Secret in the cluster with your Atlas connection URL (see [Secrets and Registry](#secrets-and-registry)). No secret file is committed in this repo. |
 
 ---
 
@@ -60,17 +60,17 @@ This repository provides everything needed to build, deploy, and operate the vot
 
 **Application endpoints**
 
-| Path      | Service         | Stack   |
-|-----------|-----------------|---------|
-| `/vote`   | Vote frontend   | Flask   |
-| `/result` | Result service  | Node.js |
+| Path      | Service        | Stack   |
+| --------- | -------------- | ------- |
+| `/vote`   | Vote frontend  | Flask   |
+| `/result` | Result service | Node.js |
 
 **Data store**
 
-| Component       | Role |
-|-----------------|------|
+| Component         | Role                                                                                                                                                                   |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **MongoDB Atlas** | Primary database for the voting application. You must create a Secret in the cluster containing your MongoDB Atlas URL; no secret file is included in this repository. |
-| **Redis**        | Used by the voting app stack (e.g. session/cache) as defined in `k8s/`. |
+| **Redis**         | Used by the voting app stack (e.g. session/cache) as defined in `k8s/`.                                                                                                |
 
 **Network**
 
@@ -81,17 +81,17 @@ This repository provides everything needed to build, deploy, and operate the vot
 
 ## Repository Structure
 
-| Path                 | Purpose |
-|----------------------|---------|
-| `Cluster/`           | Terraform: VPC, EKS cluster, IAM roles, node group. |
-| `Ingress/`           | Terraform + Helm: NGINX Ingress Controller on EKS. |
-| `Api-Cognito/`       | Terraform: Cognito User Pool, API Gateway HTTP API, VPC Link, JWT authorizer. |
-| `k8s/`               | Kubernetes manifests: voting app (vote, result, worker), Redis, Ingress. (MongoDB connection is via a Secret you create in the cluster — not in repo.) |
-| `app/`               | Application source and Dockerfiles (votingapp, result, worker). |
-| `Jenkinsfile.yaml`   | Jenkins pipeline — Cluster (Terraform init/plan/apply). |
-| `IngressPipline.yaml`| Jenkins pipeline — Ingress. |
-| `App-pip.yaml`       | Jenkins pipeline — Application. |
-| `ApiPipeline.yaml`   | Jenkins pipeline — Api-Cognito. |
+| Path                  | Purpose                                                                                                                                                |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Cluster/`            | Terraform: VPC, EKS cluster, IAM roles, node group.                                                                                                    |
+| `Ingress/`            | Terraform + Helm: NGINX Ingress Controller on EKS.                                                                                                     |
+| `Api-Cognito/`        | Terraform: Cognito User Pool, API Gateway HTTP API, VPC Link, JWT authorizer.                                                                          |
+| `k8s/`                | Kubernetes manifests: voting app (vote, result, worker), Redis, Ingress. (MongoDB connection is via a Secret you create in the cluster — not in repo.) |
+| `app/`                | Application source and Dockerfiles (votingapp, result, worker).                                                                                        |
+| `Jenkinsfile.yaml`    | Jenkins pipeline — Cluster (Terraform init/plan/apply).                                                                                                |
+| `IngressPipline.yaml` | Jenkins pipeline — Ingress.                                                                                                                            |
+| `App-pip.yaml`        | Jenkins pipeline — Application.                                                                                                                        |
+| `ApiPipeline.yaml`    | Jenkins pipeline — Api-Cognito.                                                                                                                        |
 
 ---
 
@@ -105,21 +105,21 @@ This repository provides everything needed to build, deploy, and operate the vot
 
 ## Pipelines
 
-| Pipeline              | Purpose                               | Notes |
-|-----------------------|----------------------------------------|-------|
-| `Jenkinsfile.yaml`    | Terraform init/plan/apply for Cluster  | `ACTION`: `apply` \| `destroy`; credentials: `aws_cred`. |
+| Pipeline              | Purpose                               | Notes                                                     |
+| --------------------- | ------------------------------------- | --------------------------------------------------------- |
+| `Jenkinsfile.yaml`    | Terraform init/plan/apply for Cluster | `ACTION`: `apply` \| `destroy`; credentials: `aws_cred`.  |
 | `IngressPipline.yaml` | Install NGINX Ingress (Helm) on EKS   | Runs in `Ingress/`; cluster `nti-nonprod-eks` must exist. |
-| `App-pip.yaml`        | Build and deploy voting application   | Builds images and deploys to Kubernetes. |
-| `ApiPipeline.yaml`    | Terraform for Api-Cognito             | Needs VPC ID, subnet IDs, and NLB from Cluster/Ingress. |
+| `App-pip.yaml`        | Build and deploy voting application   | Builds images and deploys to Kubernetes.                  |
+| `ApiPipeline.yaml`    | Terraform for Api-Cognito             | Needs VPC ID, subnet IDs, and NLB from Cluster/Ingress.   |
 
 ---
 
 ## Platform Components
 
-| Module        | What it provisions |
-|---------------|--------------------|
-| **Cluster**   | VPC (public/private subnets), NAT Gateway, Internet Gateway; EKS cluster and node group (`m7i-flex.large`, min 2 / max 6); IAM roles for cluster and nodes. |
-| **Ingress**   | NGINX Ingress Controller (official Helm chart), exposed as a Network Load Balancer. |
+| Module          | What it provisions                                                                                                                                              |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Cluster**     | VPC (public/private subnets), NAT Gateway, Internet Gateway; EKS cluster and node group (`m7i-flex.large`, min 2 / max 6); IAM roles for cluster and nodes.     |
+| **Ingress**     | NGINX Ingress Controller (official Helm chart), exposed as a Network Load Balancer.                                                                             |
 | **Api-Cognito** | Cognito User Pool, resource server (read/write), app client (client_credentials); API Gateway HTTP API, VPC Link to NLB, JWT authorizer, route `ANY /{proxy+}`. |
 
 ---
@@ -270,25 +270,18 @@ cd ../Cluster && terraform destroy
 
 ## Documentation
 
-| Reference     | Description |
-|---------------|-------------|
-| This README   | Architecture, structure, pipelines, **ArgoCD** (GitOps), quick start, operations, security, **MongoDB Atlas** secret (create in cluster), **Datadog** monitoring. |
-| `Cluster/`    | Variables: `region`, `environment`, `vpc_cidr`. Outputs: `vpc_id`, `private_subnets`, `public_subnets`, `cluster_name`, `cluster_endpoint`, `cluster_ca_certificate`. |
-| `Ingress/`    | Variables: `nginx_namespace`, `replica_count`, `service_type`, `aws_lb_type`, `aws_lb_internal`. Outputs: `nginx_ingress_lb_hostname`, `nginx_ingress_namespace`. |
-| `Api-Cognito/`| Variables: `region`, `vpc_id`, `subnet_ids`, `project_name`, `environment`. Outputs: `api_endpoint`, `user_pool_id`, `app_client_id`, `cognito_domain`, `vpc_link_id`. |
-| `State backend` | S3 and DynamoDB: `Cluster/backend.tf`, `Ingress/backend.tf`. |
+| Reference       | Description                                                                                                                                                            |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| This README     | Architecture, structure, pipelines, **ArgoCD** (GitOps), quick start, operations, security, **MongoDB Atlas** secret (create in cluster), **Datadog** monitoring.      |
+| `Cluster/`      | Variables: `region`, `environment`, `vpc_cidr`. Outputs: `vpc_id`, `private_subnets`, `public_subnets`, `cluster_name`, `cluster_endpoint`, `cluster_ca_certificate`.  |
+| `Ingress/`      | Variables: `nginx_namespace`, `replica_count`, `service_type`, `aws_lb_type`, `aws_lb_internal`. Outputs: `nginx_ingress_lb_hostname`, `nginx_ingress_namespace`.      |
+| `Api-Cognito/`  | Variables: `region`, `vpc_id`, `subnet_ids`, `project_name`, `environment`. Outputs: `api_endpoint`, `user_pool_id`, `app_client_id`, `cognito_domain`, `vpc_link_id`. |
+| `State backend` | S3 and DynamoDB: `Cluster/backend.tf`, `Ingress/backend.tf`.                                                                                                           |
 
 ---
 
-## About the Author
-
-**Mohamed Saleh**  
-DevOps / Cloud Engineer with experience in building and operating cloud-native platforms on AWS. Focus areas: Infrastructure as Code (Terraform), Kubernetes (EKS), CI/CD (Jenkins). This project demonstrates an end-to-end setup for EKS with API Gateway, Cognito, MongoDB Atlas, and monitoring.
-
-| | |
-|--|--|
+|          |                                  |
+| -------- | -------------------------------- |
 | **Role** | DevOps Engineer / Cloud Engineer |
-| **LinkedIn** | [www.linkedin.com/in/mo0hamed-saleh] |
-| **Email** | [engsaleh862@gmail.com] |
 
-*For internal or organizational use. Ensure compliance with AWS, HashiCorp, MongoDB Atlas, and Datadog terms of use.*
+_For internal or organizational use. Ensure compliance with AWS, HashiCorp, MongoDB Atlas, and Datadog terms of use._
