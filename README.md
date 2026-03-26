@@ -1,45 +1,78 @@
 ```mermaid
    graph TD
+    %% Node Definitions with Styling Classes
     subgraph Client_Layer [External Access]
-        User((User)) --> IGW[Internet Gateway]
-        IGW --> ALB[AWS Load Balancer]
+        User((User))
+        IGW[Internet Gateway]
+        ALB[AWS Load Balancer]
     end
     
     subgraph Security_Layer [Authentication]
-        ALB --> Cognito[AWS Cognito / JWT]
+        Cognito[AWS Cognito / JWT]
     end
     
     subgraph Cluster_Layer [EKS Cluster - Private Subnet]
-        NGINX[NGINX Ingress Controller] --> Apps[Microservices: Flask & Node.js]
-        Apps --> Helm[Helm Charts]
-        Argo[Argo CD] -->|GitOps Sync| Apps
+        NGINX[NGINX Ingress Controller]
+        Apps[Microservices: Flask & Node.js]
+        Helm[Helm Charts]
+        Argo[Argo CD]
     end
 
     subgraph Data_Layer [Database & Storage]
-        Apps --> Mongo[(MongoDB Atlas)]
-        Terraform[Terraform] -->|State Lock| S3[(S3 & DynamoDB)]
+        Mongo[(MongoDB Atlas)]
+        S3[(S3 & DynamoDB State)]
     end
     
     subgraph Observability [Monitoring]
-        Apps --> DD[Datadog]
-        Apps --> CW[CloudWatch]
+        DD[Datadog]
+        CW[CloudWatch]
     end
     
     subgraph CI_CD [Automation Pipeline]
-        Git[GitHub] --> Jenkins[Jenkins]
-        Jenkins --> ECR[Amazon ECR]
-        ECR --> Apps
+        Git[GitHub]
+        Jenkins[Jenkins]
+        ECR[Amazon ECR]
     end
 
-    %% Infrastructure as Code Trigger
+    %% Infrastructure as Code
     Terraform[Terraform IaC]
-    
-    %% Explicitly defining the VPC/Network as a cloud shape
     VPC{AWS VPC Network}
 
+    %% Connections
+    User --> IGW
+    IGW --> ALB
+    ALB --> Cognito
+    Cognito -.-> NGINX
+    NGINX --> Apps
+    Apps --> Helm
+    Argo -->|GitOps Sync| Apps
+    Apps --> Mongo
+    Apps --> DD
+    Apps --> CW
+    Git --> Jenkins
+    Git --> Argo
+    Jenkins --> ECR
+    ECR --> Apps
     Terraform -->|Backend Config| S3
     Terraform -->|Provisions| VPC
     VPC --- Cluster_Layer
+
+    %% Assigning Classes for Colors
+    class User,IGW,ALB,VPC,Cognito,ECR,CW aws
+    class NGINX,Apps,Helm,Argo k8s
+    class Mongo,S3,Redis db
+    class Terraform,Jenkins,Git,DD tool
+    class Client_Layer,Security_Layer,Cluster_Layer,Data_Layer,Observability,CI_CD layers
+
+    %% Style Definitions
+    classDef aws fill:#FF9900,stroke:#232F3E,stroke-width:2px,color:#fff;
+    classDef k8s fill:#326CE5,stroke:#1f448d,stroke-width:2px,color:#fff;
+    classDef db fill:#47A248,stroke:#3b823b,stroke-width:2px,color:#fff;
+    classDef tool fill:#623CE4,stroke:#4829b2,stroke-width:2px,color:#fff;
+    classDef layers fill:#f9f9f9,stroke:#d3d3d3,stroke-dasharray: 5 5;
+
+
+eof
 ```
 # EKS Cloud-Native Platform
 
