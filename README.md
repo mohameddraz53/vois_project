@@ -288,7 +288,7 @@ LinkedIn: [www.linkedin.com/in/mo0hamed-saleh]
 
 Email: [engsaleh862@gmail.com]
 
-LinkedIn: [https://www.linkedin.com/in/eng-mohamed-draz-70b82a1b]
+LinkedIn: [https://wwww.linkedin.com/in/eng-mohamed-draz-70b82a1b]
 
 Email: [drazmohamed542@gmail.com]
 
