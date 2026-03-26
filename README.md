@@ -1,31 +1,39 @@
-'''mermaid
 graph TD
+
     subgraph Client_Layer [External Access]
         User((User)) --> IGW[Internet Gateway]
         IGW --> ALB[AWS Load Balancer]
     end
+    
     subgraph Security_Layer [Authentication]
         ALB --> Cognito[AWS Cognito / JWT]
     end
+    
     subgraph Cluster_Layer [EKS Cluster - Private Subnet]
         NGINX[NGINX Ingress Controller] --> Apps[Microservices: Flask & Node.js]
         Apps --> Helm[Helm Charts]
         Argo[Argo CD] -->|GitOps Sync| Apps
     end
+    
     subgraph Data_Layer [Database & Storage]
         Apps --> Mongo[(MongoDB Atlas)]
         Terraform[Terraform] -->|State Lock| S3[(S3 & DynamoDB)]
     end
+    
     subgraph Observability [Monitoring]
         Apps --> DD[Datadog]
         Apps --> CW[CloudWatch]
     end
+    
     subgraph CI_CD [Automation Pipeline]
         Git[GitHub] --> Jenkins[Jenkins]
         Jenkins --> ECR[Amazon ECR]
         ECR --> Apps
     end
-'''
+    %% Infrastructure as Code Trigger
+    Terraform[Terraform] --> TF_State
+    Terraform --> VPC
+
 # EKS Cloud-Native Platform
 
 [![Terraform](https://img.shields.io/badge/terraform-%3E%3D1.5.0-623CE4?logo=terraform)](https://www.terraform.io/)
