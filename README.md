@@ -4,27 +4,22 @@ graph TD
         User((User)) --> IGW[Internet Gateway]
         IGW --> ALB[AWS Load Balancer]
     end
-
     subgraph Security_Layer [Authentication]
         ALB --> Cognito[AWS Cognito / JWT]
     end
-
     subgraph Cluster_Layer [EKS Cluster - Private Subnet]
         NGINX[NGINX Ingress Controller] --> Apps[Microservices: Flask & Node.js]
         Apps --> Helm[Helm Charts]
         Argo[Argo CD] -->|GitOps Sync| Apps
     end
-
     subgraph Data_Layer [Database & Storage]
         Apps --> Mongo[(MongoDB Atlas)]
         Terraform[Terraform] -->|State Lock| S3[(S3 & DynamoDB)]
     end
-
     subgraph Observability [Monitoring]
         Apps --> DD[Datadog]
         Apps --> CW[CloudWatch]
     end
-
     subgraph CI_CD [Automation Pipeline]
         Git[GitHub] --> Jenkins[Jenkins]
         Jenkins --> ECR[Amazon ECR]
