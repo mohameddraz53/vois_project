@@ -1,4 +1,5 @@
-<img width="1408" height="768" alt="image" src="https://github.com/user-attachments/assets/021e1e07-f8d4-416c-89b0-7d1d19db008a" />
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/6f9205da-1166-4b4d-a15e-ada7f29ca6e3" />
+
 
 # EKS Cloud-Native Platform
 
