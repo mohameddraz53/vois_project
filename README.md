@@ -1,5 +1,5 @@
-graph TD
-
+```mermaid
+   graph TD
     subgraph Client_Layer [External Access]
         User((User)) --> IGW[Internet Gateway]
         IGW --> ALB[AWS Load Balancer]
@@ -14,7 +14,7 @@ graph TD
         Apps --> Helm[Helm Charts]
         Argo[Argo CD] -->|GitOps Sync| Apps
     end
-    
+
     subgraph Data_Layer [Database & Storage]
         Apps --> Mongo[(MongoDB Atlas)]
         Terraform[Terraform] -->|State Lock| S3[(S3 & DynamoDB)]
@@ -30,10 +30,17 @@ graph TD
         Jenkins --> ECR[Amazon ECR]
         ECR --> Apps
     end
-    %% Infrastructure as Code Trigger
-    Terraform[Terraform] --> TF_State
-    Terraform --> VPC
 
+    %% Infrastructure as Code Trigger
+    Terraform[Terraform IaC]
+    
+    %% Explicitly defining the VPC/Network as a cloud shape
+    VPC{AWS VPC Network}
+
+    Terraform -->|Backend Config| S3
+    Terraform -->|Provisions| VPC
+    VPC --- Cluster_Layer
+```
 # EKS Cloud-Native Platform
 
 [![Terraform](https://img.shields.io/badge/terraform-%3E%3D1.5.0-623CE4?logo=terraform)](https://www.terraform.io/)
