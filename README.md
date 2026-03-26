@@ -1,77 +1,25 @@
 ```mermaid
-   graph TD
-    %% Node Definitions with Styling Classes
-    subgraph Client_Layer [External Access]
-        User((User))
-        IGW[Internet Gateway]
-        ALB[AWS Load Balancer]
+  graph TD
+    User[End User] -->|HTTPS| ALB[AWS Application Load Balancer]
+    ALB -->|Ingress| IngressCtrl[NGINX Ingress Controller]
+    
+    subgraph EKS Cluster
+        IngressCtrl -->|Route| FrontEndSvc[Front End Service]
+        FrontEndSvc --> FrontEndPods[React Frontend Pods]
+        FrontEndPods -->|AJAX| APISvc[API Service]
+        APISvc --> APIPods[Golang/Node API Pods]
+        
+        subgraph DataTier[Data Persistence]
+            APIPods -->|Read/Write| MongoDBService[MongoDB Service]
+            MongoDBService --> PrimaryPod[Primary MongoDB Pod]
+            PrimaryPod -.->|Replication| SecondaryPods[Secondary MongoDB Pods]
+        end
     end
     
-    subgraph Security_Layer [Authentication]
-        Cognito[AWS Cognito / JWT]
-    end
+    DataTier -->|Persistent Volume| EBS[AWS EBS Volumes]
     
-    subgraph Cluster_Layer [EKS Cluster - Private Subnet]
-        NGINX[NGINX Ingress Controller]
-        Apps[Microservices: Flask & Node.js]
-        Helm[Helm Charts]
-        Argo[Argo CD]
-    end
-
-    subgraph Data_Layer [Database & Storage]
-        Mongo[(MongoDB Atlas)]
-        S3[(S3 & DynamoDB State)]
-    end
-    
-    subgraph Observability [Monitoring]
-        DD[Datadog]
-        CW[CloudWatch]
-    end
-    
-    subgraph CI_CD [Automation Pipeline]
-        Git[GitHub]
-        Jenkins[Jenkins]
-        ECR[Amazon ECR]
-    end
-
-    %% Infrastructure as Code
-    Terraform[Terraform IaC]
-    VPC{AWS VPC Network}
-
-    %% Connections
-    User --> IGW
-    IGW --> ALB
-    ALB --> Cognito
-    Cognito -.-> NGINX
-    NGINX --> Apps
-    Apps --> Helm
-    Argo -->|GitOps Sync| Apps
-    Apps --> Mongo
-    Apps --> DD
-    Apps --> CW
-    Git --> Jenkins
-    Git --> Argo
-    Jenkins --> ECR
-    ECR --> Apps
-    Terraform -->|Backend Config| S3
-    Terraform -->|Provisions| VPC
-    VPC --- Cluster_Layer
-
-    %% Assigning Classes for Colors
-    class User,IGW,ALB,VPC,Cognito,ECR,CW aws
-    class NGINX,Apps,Helm,Argo k8s
-    class Mongo,S3,Redis db
-    class Terraform,Jenkins,Git,DD tool
-    class Client_Layer,Security_Layer,Cluster_Layer,Data_Layer,Observability,CI_CD layers
-
-    %% Style Definitions
-    classDef aws fill:#FF9900,stroke:#232F3E,stroke-width:2px,color:#fff;
-    classDef k8s fill:#326CE5,stroke:#1f448d,stroke-width:2px,color:#fff;
-    classDef db fill:#47A248,stroke:#3b823b,stroke-width:2px,color:#fff;
-    classDef tool fill:#623CE4,stroke:#4829b2,stroke-width:2px,color:#fff;
-    classDef layers fill:#f9f9f9,stroke:#d3d3d3,stroke-dasharray: 5 5;
-
-
+    style EKS Cluster fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style DataTier fill:#e1f5fe,stroke:#0277bd
 eof
 ```
 # EKS Cloud-Native Platform
