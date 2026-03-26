@@ -1,27 +1,5 @@
-```mermaid
-  graph TD
-    User[End User] -->|HTTPS| ALB[AWS Application Load Balancer]
-    ALB -->|Ingress| IngressCtrl[NGINX Ingress Controller]
-    
-    subgraph EKS Cluster
-        IngressCtrl -->|Route| FrontEndSvc[Front End Service]
-        FrontEndSvc --> FrontEndPods[React Frontend Pods]
-        FrontEndPods -->|AJAX| APISvc[API Service]
-        APISvc --> APIPods[Golang/Node API Pods]
-        
-        subgraph DataTier[Data Persistence]
-            APIPods -->|Read/Write| MongoDBService[MongoDB Service]
-            MongoDBService --> PrimaryPod[Primary MongoDB Pod]
-            PrimaryPod -.->|Replication| SecondaryPods[Secondary MongoDB Pods]
-        end
-    end
-    
-    DataTier -->|Persistent Volume| EBS[AWS EBS Volumes]
-    
-    style EKS Cluster fill:#f9f9f9,stroke:#333,stroke-width:2px
-    style DataTier fill:#e1f5fe,stroke:#0277bd
-eof
-```
+<img width="1408" height="768" alt="image" src="https://github.com/user-attachments/assets/021e1e07-f8d4-416c-89b0-7d1d19db008a" />
+
 # EKS Cloud-Native Platform
 
 [![Terraform](https://img.shields.io/badge/terraform-%3E%3D1.5.0-623CE4?logo=terraform)](https://www.terraform.io/)
